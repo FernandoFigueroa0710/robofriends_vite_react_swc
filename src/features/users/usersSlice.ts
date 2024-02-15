@@ -24,11 +24,6 @@ const initialState: UserState = {
         setUsers: (state, action: PayloadAction<User[]>) => {
             state.users = action.payload;
             state.filteredUsers = action.payload;
-        },
-        filterUsers: (state) => {
-            state.filteredUsers = state.users.filter(user =>
-                user.firstname.toLowerCase().includes(state.searchQuery.toLowerCase())
-            );
         }
     },
 });
