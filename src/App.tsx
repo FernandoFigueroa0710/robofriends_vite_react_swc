@@ -1,27 +1,28 @@
 
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {useGetUsersQuery} from './services/usersApi.ts'
-import {filterUsers, setUsers} from './features/users/usersSlice.ts'
-import {selectUsers} from './features/users/usersSelector.ts'
+import {setUsers, setSearchQuery} from './features/users/usersSlice.ts'
+import { searchQuery, selectFilterUsers } from './features/users/usersSelector.ts'
 
 function App() {
     const dispatch = useDispatch();
-    const users = useSelector(selectUsers);
+    const users = useSelector(selectFilterUsers);
+    const searchQueryStr = useSelector(searchQuery)
     const { data } = useGetUsersQuery();
-    const [filterText, setFilterText] = useState('');
+
 
     useEffect(() => {
         if (data) {
-            dispatch(filterUsers(''));
+            dispatch(setSearchQuery(''));
             dispatch(setUsers(data));
         }
     }, [data, dispatch]);
 
     const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setFilterText(e.target.value);
-        dispatch(filterUsers(e.target.value));
+        dispatch(setSearchQuery(e.target.value));
     };
+
 
     return (
         <div>
@@ -32,12 +33,12 @@ function App() {
                     style={{height: '1.5rem', width: '15rem'}}
                     onInput={handleFilterChange}
                     placeholder="Filter by name"
-                    value={filterText}
+                    value={searchQueryStr}
                     type="text"
                 />
             </div>
                 <ul>
-                    {users.map(user => (
+                    {users.map((user) => (
                         <li key={user.id}>{user.firstname} {user.lastname}</li>
                     ))}
                 </ul>
