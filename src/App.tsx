@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {useGetUsersQuery} from './services/usersApi.ts'
 import {setUsers, setSearchQuery} from './features/users/usersSlice.ts'
 import { searchQuery, selectFilterUsers } from './features/users/usersSelector.ts'
+import { User } from './types/user.types.ts'
 
 function App() {
     const dispatch = useDispatch();
@@ -38,7 +39,7 @@ function App() {
                 />
             </div>
                 <ul>
-                    {users.map((user) => (
+                    {users.map((user: User) => (
                         <li key={user.id}>{user.firstname} {user.lastname}</li>
                     ))}
                 </ul>
